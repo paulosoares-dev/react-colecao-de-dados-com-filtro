@@ -2,57 +2,61 @@ import "./style.css";
 import Lupa from "../../assets/lupa.png";
 import ItemJogos from "../ItemJogos";
 import { useState } from "react";
-import { jogosExclusivos } from "../../dados";
+import { filtrarJogo, buscarJogo, retornarJogos } from "../../servico";
 
 const ListaDeJogosExclusivos = () => {
-  const [listaJogos, setListaJogos] = useState(jogosExclusivos);
+  const [listaJogos, setListaJogos] = useState(retornarJogos());
   const [textoBusca, setTextoBusca] = useState("");
 
-const handleFiltrarJogoPlataforma = (plataforma) => {
-    setListaJogos(jogosExclusivos.filter((jogo) => jogo.plataforma === plataforma));
+  const handleFiltrarJogoPlataforma = (plataforma) => {
+    setListaJogos(filtrarJogo(plataforma));
     setTextoBusca("");
-};
+  };
 
-const handleLimparFiltro = () => {
-    setListaJogos(jogosExclusivos);
+  const handleLimparFiltro = () => {
+    setListaJogos(retornarJogos());
     setTextoBusca("");
-};
+  };
 
-const handleBuscarJogo = (textoDigitado) => {
+  const handleBuscarJogo = (textoDigitado) => {
     setTextoBusca(textoDigitado);
-    setListaJogos(
-        jogosExclusivos.filter(
-            (jogo) =>
-            jogo.nome.toLowerCase().includes(textoDigitado.toLowerCase()) ||
-            jogo.plataforma.toLowerCase().includes(textoDigitado.toLowerCase())
-        )
-    );
-};
+    setListaJogos(buscarJogo(textoDigitado));
+  };
 
-    return (
-        <div className="container-principal">
-        <h2>Lista de Jogos Exclusivos</h2>
-        <div className="container-btns">
-            <button onClick={() => handleFiltrarJogoPlataforma("xbox")}>XBOX</button>
-            <button onClick={() => handleFiltrarJogoPlataforma("playstation")}>PlayStation</button>
-            <button onClick={() => handleFiltrarJogoPlataforma("nintendo")}>Nintendo</button>
-            <button onClick={() => handleLimparFiltro()}>Limpar Filtro</button>
-        </div>
-        <div className="container-input">
-            <img src={Lupa} alt="ícone" />
-            <input
-            type="text"
-            value={textoBusca}
-            onChange={(event) => handleBuscarJogo(event.target.value)}
-            placeholder="Pesquise um jogo ou plataforma"
-            />
-        </div>
-        <div className="container-jogos">
-            {listaJogos.map((jogo) => (
-            <ItemJogos key={jogo.id} nome={jogo.nome} plataforma={jogo.plataforma} />
-            ))}
-        </div>
-        </div>
-    );
+  return (
+    <div className="container-principal">
+      <h2>Lista de Jogos Exclusivos</h2>
+      <div className="container-btns">
+        <button onClick={() => handleFiltrarJogoPlataforma("xbox")}>
+          XBOX
+        </button>
+        <button onClick={() => handleFiltrarJogoPlataforma("playstation")}>
+          PlayStation
+        </button>
+        <button onClick={() => handleFiltrarJogoPlataforma("nintendo")}>
+          Nintendo
+        </button>
+        <button onClick={() => handleLimparFiltro()}>Limpar Filtro</button>
+      </div>
+      <div className="container-input">
+        <img src={Lupa} alt="ícone" />
+        <input
+          type="text"
+          value={textoBusca}
+          onChange={(event) => handleBuscarJogo(event.target.value)}
+          placeholder="Pesquise um jogo ou plataforma"
+        />
+      </div>
+      <div className="container-jogos">
+        {listaJogos.map((jogo) => (
+          <ItemJogos
+            key={jogo.id}
+            nome={jogo.nome}
+            plataforma={jogo.plataforma}
+          />
+        ))}
+      </div>
+    </div>
+  );
 };
 export default ListaDeJogosExclusivos;
