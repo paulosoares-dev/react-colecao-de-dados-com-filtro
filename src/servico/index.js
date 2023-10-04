@@ -1,7 +1,7 @@
-import { jogosExclusivos } from "../data";
+import { jogosExclusivos } from "../dados";
 
 export const retornarJogos = () => {
-     return jogosExclusivos;
+  return jogosExclusivos;
 };
 
 export const buscarJogo = (textoDigitado) => {
